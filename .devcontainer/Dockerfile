@@ -50,15 +50,14 @@ RUN mamba install -c conda-forge -y --quiet \
   r-writexl r-readxl && \
   mamba clean --all -f -y
 
-# ---- Python packages (data science essentials) ----
-RUN pip install --no-cache-dir \
-  debugpy ipykernel \
-  openpyxl xlrd xlsxwriter \
-  statsmodels \
-  ipython-sql \
-  streamlit fastapi requests \
-  pytest pytest-cov \
-  black flake8 autopep8
+# ---- Python packages (from the repo's requirements.txt) ----
+# requirements.txt is the single source of truth for Python packages, so the
+# build context is the repo root (see build-container.yml / devcontainer.json).
+# No -U: packages conda already provides are kept; only missing ones are added.
+COPY --chown=jovyan:users requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt && \
+  python -c "import pandas, sklearn, statsmodels, pingouin, factor_analyzer, semopy, polars, tensorflow, pymongo, dotenv" && \
+  rm /tmp/requirements.txt
 
 # ---- R packages: Only packages NOT available in conda ----
 RUN R -e "options(repos = c(CRAN = 'https://packagemanager.posit.co/cran/__linux__/jammy/latest')); \

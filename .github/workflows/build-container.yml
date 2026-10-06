@@ -19,12 +19,15 @@ on:
     paths:
       - '.devcontainer/Dockerfile'
       - '.devcontainer/conda_setup.sh'
+      - 'requirements.txt'
+      - '.dockerignore'
       - '.github/workflows/build-container.yml'
   workflow_dispatch:  # Allow manual trigger
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  # IMAGE_NAME is set per job from github.repository, lowercased: GHCR rejects
+  # uppercase ("BAN6503_Marketing_Analytics") and expressions have no lower().
 
 jobs:
   build:
@@ -45,6 +48,9 @@ jobs:
       packages: write
 
     steps:
+      - name: Set lowercase image name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -62,9 +68,13 @@ jobs:
         id: build
         uses: docker/build-push-action@v6
         with:
-          context: .devcontainer
+          # Repo root, so the Dockerfile can COPY requirements.txt.
+          # .dockerignore keeps everything else out of the context.
+          context: .
           file: .devcontainer/Dockerfile
           platforms: ${{ matrix.platform }}
+          # Links the GHCR package to this repo so it inherits repo access.
+          labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
           outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
           # Cache is scoped per-arch so the two legs do not evict each other.
           cache-from: type=gha,scope=${{ matrix.arch }}
@@ -93,6 +103,9 @@ jobs:
       packages: write
 
     steps:
+      - name: Set lowercase image name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+
       - name: Download digests
         uses: actions/download-artifact@v4
         with:

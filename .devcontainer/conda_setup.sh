@@ -98,6 +98,15 @@ missing <- pkgs[!sapply(pkgs, requireNamespace, quietly=TRUE)]
 if (length(missing)==0) cat("   R packages: all OK\n") else cat("   R packages missing:", paste(missing, collapse=", "), "\n")
 ' 2>/dev/null
 
+# Quick Python package check (packages come from requirements.txt in the image)
+python - <<'PY' 2>/dev/null
+import importlib.util
+mods =["pandas", "numpy", "sklearn", "statsmodels", "seaborn", "plotly", "sqlalchemy",
+        "psycopg2", "pingouin", "factor_analyzer", "semopy", "polars", "tensorflow"]
+missing = [m for m in mods if importlib.util.find_spec(m) is None]
+print("   Python packages: all OK" if not missing else "   Python packages missing: " + ", ".join(missing)
+      + "\n   Fix: pip install -r requirements.txt")
+PY
 END_TIME=$(date +%s)
 echo ""
 echo "════════════════════════════════════════════"

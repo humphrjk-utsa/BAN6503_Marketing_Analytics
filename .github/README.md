@@ -79,7 +79,7 @@ Assignments are not collected from GitHub. You download the finished notebook fr
 | Problem | What to do |
 | --- | --- |
 | Codespace opens but freezes when I run a cell | You are probably on campus. Use the campus editor link from the Canvas guide. |
-| `ModuleNotFoundError` when a cell runs | Open the terminal (**View → Terminal**) and run `uv sync`, then run the cell again. |
+| `ModuleNotFoundError` when a cell runs | Open the terminal (**View → Terminal**) and run `pip install -r requirements.txt`, then restart the kernel and run the cell again. |
 | `FileNotFoundError` reading the data | The notebook is looking in the wrong folder. Keep the data files in each week's `data/` folder and open the notebook from there. |
 | My changes do not show on GitHub | You committed but did not sync. Open Source Control and click **Sync Changes**. |
 | Codespace will not start | Delete it at [github.com/codespaces](https://github.com/codespaces) and create a new one from your repository. Anything you pushed is restored automatically. |

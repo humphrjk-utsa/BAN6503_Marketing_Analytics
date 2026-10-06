@@ -2,7 +2,7 @@
   "name": "Data Science Classroom",
   // Use pre-built image from GHCR for fast startup (~2 min vs ~15 min)
   // Image built by .github/workflows/build-container.yml on push to main
-  // If image is unavailable, replace "image" with: "build": { "dockerfile": "Dockerfile" }
+  // If image is unavailable, replace "image" with: "build": { "dockerfile": "Dockerfile", "context": ".." }
   "image": "ghcr.io/utsa-humphries-data-science/ms3313_v2:latest",
   // Container settings
   // MUST be true in Codespaces: with false, Jupyter (start-notebook.py) becomes PID 1
