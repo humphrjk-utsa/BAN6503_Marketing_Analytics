@@ -69,7 +69,6 @@ This is a **Data Science Classroom** dev container designed for MS3313 coursewor
 | `mechatroner.rainbow-csv`                   | CSV highlighting           |
 | `janisdd.vscode-edit-csv`                   | CSV editing                |
 | `github.copilot` + `github.copilot-chat`    | AI assistance (restricted) |
-| `eamodio.gitlens`                           | Git visualization          |
 
 ---
 
@@ -239,8 +238,7 @@ check_status  # Run full environment check
 4. **Added `student` as primary database user** with SUPERUSER
 5. **Added extensions auto-update** setting
 6. **Disabled Settings Sync** to preserve classroom settings
-7. **Added GitLens extension** for git visualization
-8. **Added upstream remote** pointing to `humphrjk-utsa/MS3313_base_template.git`
+7. **Added upstream remote** pointing to `humphrjk-utsa/MS3313_base_template.git`
 
 ---
 
